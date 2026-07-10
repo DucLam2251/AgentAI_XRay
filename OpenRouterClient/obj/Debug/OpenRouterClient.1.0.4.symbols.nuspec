@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>OpenRouterClient</id>
+    <version>1.0.4</version>
+    <title>OpenRouterClient</title>
+    <authors>Kareem Magdy</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>logo.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/KareemMagdy55/OpenRouterClient</projectUrl>
+    <description>A C# and .NET client designed for developers seeking a simple and flexible way to integrate OpenRouter’s advanced AI models into their applications.</description>
+    <tags>openrouter nlp chatgpt llm ai dotnet ml api csharp</tags>
+    <repository type="git" url="https://github.com/KareemMagdy55/OpenRouterClient" />
+    <dependencies>
+      <group targetFramework="net9.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.pdb" target="lib/net9.0/OpenRouterClient.pdb" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.dll" target="lib/net9.0/OpenRouterClient.dll" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.xml" target="lib/net9.0/OpenRouterClient.xml" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/README.md" target="/README.md" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/logo.png" target="/logo.png" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/Builders/ChatCompletionRequestBuilder.cs" target="src/OpenRouterClient/Builders/ChatCompletionRequestBuilder.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/DTO/Request/MessageDto.cs" target="src/OpenRouterClient/DTO/Request/MessageDto.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/DTO/Request/OpenRouterRequestDto.cs" target="src/OpenRouterClient/DTO/Request/OpenRouterRequestDto.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/DTO/Request/ReasoningDto.cs" target="src/OpenRouterClient/DTO/Request/ReasoningDto.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/DTO/Resposne/ChoiceDto.cs" target="src/OpenRouterClient/DTO/Resposne/ChoiceDto.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/DTO/Resposne/OpenRouterResponseDto.cs" target="src/OpenRouterClient/DTO/Resposne/OpenRouterResponseDto.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/Services/ChatCompletionService.cs" target="src/OpenRouterClient/Services/ChatCompletionService.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/Services/Client.cs" target="src/OpenRouterClient/Services/Client.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/Services/HttpRequestService.cs" target="src/OpenRouterClient/Services/HttpRequestService.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/Services/ServiceOrchestrator.cs" target="src/OpenRouterClient/Services/ServiceOrchestrator.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/Utilities/OpenRouterClientGlobalConfig.cs" target="src/OpenRouterClient/Utilities/OpenRouterClientGlobalConfig.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.GlobalUsings.g.cs" target="src/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.GlobalUsings.g.cs" />
+    <file src="/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/OpenRouterClient.csproj" target="src/OpenRouterClient/OpenRouterClient.csproj" />
+  </files>
+</package>

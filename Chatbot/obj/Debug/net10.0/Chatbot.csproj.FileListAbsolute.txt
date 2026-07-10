@@ -1,0 +1,66 @@
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/data/diseases.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/Chatbot.staticwebassets.runtime.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/Chatbot.staticwebassets.endpoints.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/Chatbot
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/Chatbot.deps.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/Chatbot.runtimeconfig.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/Chatbot.dll
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/Chatbot.pdb
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/OpenRouterClient.dll
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/OpenRouterClient.pdb
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/bin/Debug/net10.0/OpenRouterClient.xml
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/Chatbot.csproj.AssemblyReference.cache
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/rpswa.dswa.cache.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/Chatbot.GeneratedMSBuildEditorConfig.editorconfig
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/Chatbot.AssemblyInfoInputs.cache
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/Chatbot.AssemblyInfo.cs
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/Chatbot.csproj.CoreCompileInputs.cache
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/Chatbot.MvcApplicationPartsAssemblyInfo.cache
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/rjimswa.dswa.cache.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/rjsmrazor.dswa.cache.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/scopedcss/bundle/Chatbot.styles.css
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/compressed/9gagz4yyh7-{0}-slh3bbe17s-slh3bbe17s.gz
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/compressed/krhrnio5ya-{0}-y5oa0ekpzn-y5oa0ekpzn.gz
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/staticwebassets.build.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/staticwebassets.build.json.cache
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/staticwebassets.development.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/staticwebassets.build.endpoints.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/swae.build.ex.cache
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/Chatbot.csproj.Up2Date
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/Chatbot.dll
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/refint/Chatbot.dll
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/Chatbot.pdb
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/Chatbot.genruntimeconfig.cache
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/Chatbot/obj/Debug/net10.0/ref/Chatbot.dll
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\bin\Debug\net10.0\data\diseases.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\bin\Debug\net10.0\Chatbot.staticwebassets.runtime.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\bin\Debug\net10.0\Chatbot.staticwebassets.endpoints.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\bin\Debug\net10.0\Chatbot.exe
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\bin\Debug\net10.0\Chatbot.deps.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\bin\Debug\net10.0\Chatbot.runtimeconfig.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\bin\Debug\net10.0\Chatbot.dll
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\bin\Debug\net10.0\Chatbot.pdb
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\rpswa.dswa.cache.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\Chatbot.GeneratedMSBuildEditorConfig.editorconfig
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\Chatbot.AssemblyInfoInputs.cache
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\Chatbot.AssemblyInfo.cs
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\Chatbot.csproj.CoreCompileInputs.cache
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\Chatbot.MvcApplicationPartsAssemblyInfo.cache
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\rjimswa.dswa.cache.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\scopedcss\bundle\Chatbot.styles.css
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\compressed\9gagz4yyh7-{0}-slh3bbe17s-slh3bbe17s.gz
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\compressed\krhrnio5ya-{0}-yesvruly07-yesvruly07.gz
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\staticwebassets.build.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\staticwebassets.build.json.cache
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\staticwebassets.development.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\staticwebassets.build.endpoints.json
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\swae.build.ex.cache
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\Chatbot.dll
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\refint\Chatbot.dll
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\Chatbot.pdb
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\Chatbot.genruntimeconfig.cache
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\obj\Debug\net10.0\ref\Chatbot.dll

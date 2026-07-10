@@ -1,0 +1,419 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenRouterClient</name>
+    </assembly>
+    <members>
+        <member name="T:OpenRouterClient.Builders.ChatCompletionRequestBuilder">
+            <summary>
+            A fluent builder for constructing and sending OpenRouter chat completion requests.
+            Provides methods to configure all parameters supported by the OpenRouter API.
+            </summary>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.#ctor(OpenRouterClient.Services.ServiceOrchestrator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenRouterClient.Builders.ChatCompletionRequestBuilder"/> class.
+            </summary>
+            <param name="serviceOrchestrator">The service orchestrator instance used for sending requests.</param>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithModel(System.String)">
+            <summary>
+            Specifies the model to use for the completion.
+            </summary>
+            <param name="model">The model ID (e.g., "openrouter/auto" or specific model name).</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.AddMessage(System.String,System.String)">
+            <summary>
+            Adds a message to the conversation history.
+            </summary>
+            <param name="role">The role of the message sender ("system", "user", or "assistant").</param>
+            <param name="content">The content of the message.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.AddUserMessage(System.String)">
+            <summary>
+            Adds a user message to the conversation history.
+            </summary>
+            <param name="content">The content of the user message.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.AddAssistantMessage(System.String)">
+            <summary>
+            Adds an assistant message to the conversation history.
+            </summary>
+            <param name="content">The content of the assistant message.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.AddSystemMessage(System.String)">
+            <summary>
+            Adds a system message to the conversation history.
+            </summary>
+            <param name="content">The content of the system message.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithMaxTokens(System.Int32)">
+            <summary>
+            Sets the maximum number of tokens to generate in the completion.
+            </summary>
+            <param name="maxTokens">Maximum tokens (range: [1, context_length]).</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithTemperature(System.Double)">
+            <summary>
+            Sets the sampling temperature for more creative/random outputs.
+            </summary>
+            <param name="temperature">Value between 0 and 2. Higher values = more random.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithSeed(System.Int32)">
+            <summary>
+            Sets the random seed for deterministic outputs.
+            </summary>
+            <param name="seed">The seed value for random generation.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithTopP(System.Double)">
+            <summary>
+            Sets top-p (nucleus) sampling parameter.
+            </summary>
+            <param name="topP">Value between 0 and 1. Lower values = more focused outputs.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithTopK(System.Int32)">
+            <summary>
+            Sets top-k sampling parameter.
+            </summary>
+            <param name="topK">Number of highest probability tokens to consider (range: [1, ∞)).</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithMinP(System.Double)">
+            <summary>
+            Sets minimum probability threshold for token selection.
+            </summary>
+            <param name="minP">Value between 0 and 1.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithTopA(System.Double)">
+            <summary>
+            Sets top-a sampling parameter (alternative to top-p/top-k).
+            </summary>
+            <param name="topA">Value between 0 and 1.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithFrequencyPenalty(System.Double)">
+            <summary>
+            Sets frequency penalty to reduce repetition of tokens.
+            </summary>
+            <param name="frequencyPenalty">Value between -2 and 2.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithPresencePenalty(System.Double)">
+            <summary>
+            Sets presence penalty to encourage new topics.
+            </summary>
+            <param name="presencePenalty">Value between -2 and 2.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithRepetitionPenalty(System.Double)">
+            <summary>
+            Sets repetition penalty to control token repetition.
+            </summary>
+            <param name="repetitionPenalty">Value between 0 and 2.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithLogitBias(System.Collections.Generic.Dictionary{System.String,System.Double})">
+            <summary>
+            Sets logit bias for specific tokens.
+            </summary>
+            <param name="logitBias">Dictionary mapping token IDs to bias values.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithTopLogprobs(System.Int32)">
+            <summary>
+            Sets number of top log probabilities to return.
+            </summary>
+            <param name="topLogprobs">Number of logprobs to return.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithStreaming(System.Boolean)">
+            <summary>
+            Enables or disables streaming of partial results.
+            </summary>
+            <param name="stream">True to enable streaming (default: true).</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithTransforms(System.String[])">
+            <summary>
+            Sets prompt transforms (OpenRouter-specific).
+            </summary>
+            <param name="transforms">List of transform names.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithModelRouting(System.String[])">
+            <summary>
+            Sets alternative models for routing overrides.
+            </summary>
+            <param name="models">List of alternative model IDs.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithSortPreference(System.String)">
+            <summary>
+            Sets model sorting preference.
+            </summary>
+            <param name="sort">Sort preference (e.g., "price", "throughput").</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithReasoning(System.String,System.Nullable{System.Int32},System.Boolean)">
+            <summary>
+            Configures reasoning/thinking tokens.
+            </summary>
+            <param name="effort">Effort level ("high", "medium", "low").</param>
+            <param name="maxTokens">Max tokens for reasoning.</param>
+            <param name="exclude">Whether to exclude reasoning from response.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.WithUser(System.String)">
+            <summary>
+            Sets user identifier for monitoring.
+            </summary>
+            <param name="user">Unique user identifier.</param>
+            <returns>The builder instance for method chaining.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.SendAsync">
+            <summary>
+            Sends the constructed request to OpenRouter and returns the response.
+            </summary>
+            <returns>The completion response or null if failed.</returns>
+        </member>
+        <member name="M:OpenRouterClient.Builders.ChatCompletionRequestBuilder.Build">
+            <summary>
+            Returns the configured request object without sending it.
+            </summary>
+            <returns>The fully configured OpenRouterRequestDto.</returns>
+        </member>
+        <member name="T:OpenRouterClient.DTO.Request.MessageDto">
+            <summary>
+            Represents a message in the OpenRouter conversation.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.Request.MessageDto.Role">
+            <summary>
+            The role of the message sender. Must be 'system', 'user', or 'assistant'.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.Request.MessageDto.Content">
+            <summary>
+            The content of the message.
+            </summary>
+        </member>
+        <member name="T:OpenRouterClient.DTO.OpenRouterRequestDto">
+            <summary>
+            Represents a request to the OpenRouter API for generating completions or chat-based responses.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.Model">
+            <summary>
+            Required. The model ID to use. If unspecified, the user's default is used.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.Messages">
+            <summary>
+            Required. List of message objects describing the conversation.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.Stream">
+            <summary>
+            Optional. Enable streaming of results. Defaults to false.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.MaxTokens">
+            <summary>
+            Optional. Maximum number of tokens to generate (range: [1, context_length)).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.Temperature">
+            <summary>
+            Optional. Sampling temperature (range: [0, 2]).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.Seed">
+            <summary>
+            Optional. Seed for deterministic outputs.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.TopP">
+            <summary>
+            Optional. Top-p sampling value (range: (0, 1]).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.TopK">
+            <summary>
+            Optional. Top-k sampling value (range: [1, Infinity)).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.FrequencyPenalty">
+            <summary>
+            Optional. Frequency penalty (range: [-2, 2]).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.PresencePenalty">
+            <summary>
+            Optional. Presence penalty (range: [-2, 2]).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.RepetitionPenalty">
+            <summary>
+            Optional. Repetition penalty (range: (0, 2]).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.LogitBias">
+            <summary>
+            Optional. Mapping of token IDs to bias values.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.TopLogprobs">
+            <summary>
+            Optional. Number of top log probabilities to return.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.MinP">
+            <summary>
+            Optional. Minimum probability threshold (range: [0, 1]).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.TopA">
+            <summary>
+            Optional. Alternate top sampling parameter (range: [0, 1]).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.Transforms">
+            <summary>
+            Optional. List of prompt transforms (OpenRouter-only).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.Models">
+            <summary>
+            Optional. Alternate list of models for routing overrides.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.Sort">
+            <summary>
+            Optional. Sort preference (e.g., price, throughput).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.Reasoning">
+            <summary>
+            Optional. Configuration for model reasoning/thinking tokens.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterRequestDto.User">
+            <summary>
+            Optional. A unique identifier representing your end-user.
+            </summary>
+        </member>
+        <member name="T:OpenRouterClient.DTO.ReasoningDto">
+            <summary>
+            Represents reasoning configuration for the request.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.ReasoningDto.Effort">
+            <summary>
+            Optional. OpenAI-style reasoning effort setting (high, medium, low).
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.ReasoningDto.MaxTokens">
+            <summary>
+            Optional. Non-OpenAI-style reasoning effort setting (max tokens).
+            Cannot be used simultaneously with effort.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.ReasoningDto.Exclude">
+            <summary>
+            Optional. Whether to exclude reasoning from the response. Defaults to false.
+            </summary>
+        </member>
+        <member name="T:OpenRouterClient.DTO.OpenRouterResponseDto">
+            <summary>
+            Represents a response from the OpenRouter API for chat completions.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterResponseDto.Id">
+            <summary>
+            Optional. Unique identifier for the completion.
+            </summary>
+        </member>
+        <member name="P:OpenRouterClient.DTO.OpenRouterResponseDto.Choices">
+            <summary>
+            Optional. List of completion choices.
+            </summary>
+        </member>
+        <member name="T:OpenRouterClient.Services.ChatCompletionService">
+            <summary>
+            Service responsible for sending chat completion requests to the OpenRouter API.
+            </summary>
+        </member>
+        <member name="M:OpenRouterClient.Services.ChatCompletionService.CreateChatAsync(OpenRouterClient.DTO.OpenRouterRequestDto)">
+            <summary>
+            Sends a chat completion request to the OpenRouter API and returns the response.
+            </summary>
+            <param name="OpenRouterRequestDto"> <see cref="T:OpenRouterClient.DTO.OpenRouterResponseDto"/> The request object containing all parameters for the OpenRouter model.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains the <see cref="T:OpenRouterClient.DTO.OpenRouterResponseDto"/>
+            which includes the generated model response and related metadata.
+            </returns>
+        </member>
+        <member name="M:OpenRouterClient.Services.HttpRequestService._PostRequestAsync``2(``0)">
+            <summary>
+            Sends an asynchronous HTTP POST request with a JSON body and deserializes the response.
+            </summary>
+            <typeparam name="TRequest">The type of the request DTO.</typeparam>
+            <typeparam name="TResponse">The type of the expected response DTO.</typeparam>
+            <param name="requestDto">The request data transfer object containing the request payload.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains the deserialized response,
+            or null if an error occurred.
+            </returns>
+        </member>
+        <member name="M:OpenRouterClient.Services.HttpRequestService._GetRequestAsync``2(``0)">
+            <summary>
+            Sends an asynchronous HTTP Get request with a JSON body and deserializes the response.
+            </summary>
+            <typeparam name="TRequest">The type of the request DTO.</typeparam>
+            <typeparam name="TResponse">The type of the expected response DTO.</typeparam>
+            <param name="requestDto">The request data transfer object containing the request payload.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains the deserialized response,
+            or null if an error occurred.
+            </returns>
+        </member>
+        <member name="P:OpenRouterClient.Services.ServiceOrchestrator.ChatCompletionService">
+            <summary>
+            Service responsible for sending chat completion requests to the OpenRouter API.
+            </summary>
+        </member>
+        <member name="P:ChoiceDto.Message">
+            <summary>
+            Optional. The message generated by the model.
+            </summary>
+        </member>
+        <member name="T:Client">
+            <summary>
+            Represents the main client for interacting with the OpenRouter API.
+            Initializes global configuration and provides access to chat completion requests.
+            </summary>
+        </member>
+        <member name="M:Client.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Client"/> class with the specified API URL and token.
+            </summary>
+            <param name="apiUrl">The base URL of the OpenRouter API.</param>
+            <param name="apiToken">The API token used for authentication.</param>
+        </member>
+        <member name="P:Client.Chat">
+            <summary>
+            Gets or sets the chat completion request builder.
+            </summary>
+        </member>
+    </members>
+</doc>

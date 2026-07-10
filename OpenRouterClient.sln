@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11626.88
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRouterClient", "OpenRouterClient\OpenRouterClient.csproj", "{68A0BE53-E3AB-4D6C-84D8-1D4B3D4C58EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatbot", "Chatbot\Chatbot.csproj", "{7FF61A30-BE0E-4CBD-91A1-C0F3A517DA15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ruter", "Ruter\Ruter.csproj", "{C073FAA1-78B2-46B6-8338-EE23D37C346A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68A0BE53-E3AB-4D6C-84D8-1D4B3D4C58EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68A0BE53-E3AB-4D6C-84D8-1D4B3D4C58EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68A0BE53-E3AB-4D6C-84D8-1D4B3D4C58EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68A0BE53-E3AB-4D6C-84D8-1D4B3D4C58EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FF61A30-BE0E-4CBD-91A1-C0F3A517DA15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FF61A30-BE0E-4CBD-91A1-C0F3A517DA15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FF61A30-BE0E-4CBD-91A1-C0F3A517DA15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FF61A30-BE0E-4CBD-91A1-C0F3A517DA15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C073FAA1-78B2-46B6-8338-EE23D37C346A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C073FAA1-78B2-46B6-8338-EE23D37C346A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C073FAA1-78B2-46B6-8338-EE23D37C346A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C073FAA1-78B2-46B6-8338-EE23D37C346A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0EBE38B-560E-4E14-8E2E-4FBF452C78B5}
+	EndGlobalSection
+EndGlobal

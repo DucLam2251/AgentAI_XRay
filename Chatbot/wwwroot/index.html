@@ -1,0 +1,379 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chatbot X-quang Cơ xương</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0; background:#151515; color:#ddd }
+    .container{ max-width:1000px; height:90vh; margin:20px auto; background:#111; border-radius:8px; display:flex; flex-direction:column; box-shadow:0 2px 12px rgba(0,0,0,0.6)}
+    .chat-header{ padding:12px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.03)}
+    .chat-header .left{ display:flex; align-items:center; gap:12px }
+    .avatar{ width:44px; height:44px; background:linear-gradient(45deg,#444,#222); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff }
+    .title{ font-weight:600 }
+    .chat-header .right .icon{ background:transparent; border:none; color:#b76cff; font-size:18px; margin-left:8px }
+
+    .messages{ flex:1; overflow:auto; padding:18px; display:flex; flex-direction:column; gap:12px }
+    .msg{ display:flex }
+    .msg.user{ justify-content:flex-end }
+    .msg.assistant{ justify-content:flex-start }
+    .bubble{ padding:10px 14px; border-radius:18px; max-width:60%; display:inline-block }
+    .user .bubble{ background:linear-gradient(90deg,#7a2cff,#2f7bff); color:white; border-bottom-right-radius:4px }
+    .assistant .bubble{ background:#1f1f1f; color:#ddd; border-bottom-left-radius:4px }
+
+    .chat-footer{ padding:12px 16px; display:flex; gap:12px; align-items:center; border-top:1px solid rgba(255,255,255,0.03) }
+    .left-controls{ display:flex; align-items:center; gap:8px }
+    .fileLabel{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#222; cursor:pointer }
+    .fileLabel input{ display:none }
+    .fileLabel .plus{ color:#58f; font-size:20px }
+    .smallBtn{ background:#2a2a2a; color:#fff; border:none; padding:8px 10px; border-radius:8px }
+
+    .inputRow{ flex:1; display:flex; gap:8px; align-items:center }
+    #input{ flex:1; padding:12px 14px; border-radius:20px; border:1px solid rgba(255,255,255,0.04); background:#0f0f0f; color:#fff }
+    #send{ width:44px; height:44px; border-radius:50%; background:linear-gradient(90deg,#7a2cff,#2f7bff); color:white; border:none }
+    /* Image thumbnail and modal styles */
+    .imgContainer{ display:flex; flex-direction:column; gap:6px; margin:8px 0 }
+    .imgThumb{ max-width:240px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1) }
+    .zoomBtn{ align-self:flex-start; padding:6px 10px; font-size:13px; border-radius:6px; background:#444; color:#fff; border:none; cursor:pointer }
+
+    .modal{ display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background:rgba(0,0,0,0.85); align-items:center; justify-content:center }
+    .modal.open{ display:flex }
+    .modalContent{ max-width:95%; max-height:95%; text-align:center }
+    .modalImg{ max-width:100%; max-height:85vh; border-radius:8px }
+    .modalCaption{ color:#fff; margin-top:8px }
+    .modalClose{ position:absolute; right:20px; top:20px; padding:8px 12px; background:#fff; border-radius:6px; cursor:pointer }
+
+    /* Upload notice popup */
+    .noticeOverlay{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.7); align-items:center; justify-content:center }
+    .noticeOverlay.open{ display:flex }
+    .noticeBox{ background:#1e1e2e; border:1px solid rgba(122,44,255,0.4); border-radius:12px; padding:28px 32px; max-width:380px; text-align:center; color:#ddd }
+    .noticeBox h3{ margin:0 0 12px; color:#b76cff; font-size:16px }
+    .noticeBox p{ margin:0 0 20px; font-size:14px; line-height:1.6; color:#aaa }
+    .noticeBox .badge{ display:inline-block; background:rgba(122,44,255,0.15); border:1px solid rgba(122,44,255,0.3); border-radius:6px; padding:6px 12px; font-size:13px; color:#b76cff; margin-bottom:20px }
+    .noticeOkBtn{ background:linear-gradient(90deg,#7a2cff,#2f7bff); color:#fff; border:none; padding:10px 28px; border-radius:8px; font-size:14px; cursor:pointer }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="chat-header">
+      <div class="left">
+        <div class="title">Chatbot X-quang Cơ xương</div>
+      </div>
+      <div class="right">
+        <a class="smallBtn" href="/admin.html" target="_blank">Quản lý bệnh (Admin)</a>
+      </div>
+
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="chat-footer">
+      <div class="left-controls">
+        <input type="file" id="fileInput" accept="image/*" style="display:none" />
+        <label class="fileLabel" id="fileLabelTrigger">
+          <span class="plus">＋</span>
+        </label>
+
+        <!-- Upload notice popup -->
+        <div class="noticeOverlay" id="uploadNotice">
+          <div class="noticeBox">
+            <h3>Lưu ý về chức năng phân tích ảnh</h3>
+            <div class="badge">Chỉ hỗ trợ ảnh X-quang xương gãy</div>
+            <p>Hệ thống chỉ hỗ trợ phát hiện và mô tả <strong>gãy xương</strong> trên ảnh X-quang. Các loại ảnh khác có thể cho kết quả không chính xác.</p>
+            <button class="noticeOkBtn" id="noticeOkBtn">Đã hiểu, chọn ảnh</button>
+          </div>
+        </div>
+        <span id="fileName" style="margin-left:8px; color:#bbb; font-size:13px">Chưa chọn file</span>
+        <button id="upload" class="smallBtn" disabled> Mô tả ảnh </button>
+      </div>
+
+      <div class="inputRow">
+        <input type="text" id="input" placeholder="Nhập câu hỏi hoặc URL ảnh X-quang..." />
+        <button id="send">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('input');
+    const fileInput = document.getElementById('fileInput');
+    const uploadBtn = document.getElementById('upload');
+    const sendBtn = document.getElementById('send');
+    const fileNameEl = document.getElementById('fileName');
+
+    function escapeHtml(s){
+      if(!s) return '';
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    function append(role, text){
+      const div = document.createElement('div');
+      div.className = 'msg ' + (role === 'user' ? 'user' : 'assistant');
+      const span = document.createElement('div');
+      span.className = 'bubble';
+      // render newlines as <br> but escape HTML to avoid XSS
+      span.innerHTML = escapeHtml(text).replace(/\n/g, '<br>');
+      div.appendChild(span);
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    // Show image with thumbnail and zoom to fullscreen modal
+    function showImageWithZoom(originalDataUrl, caption, annotated){
+      const wrapper = document.createElement('div');
+      wrapper.className = 'msg assistant';
+      const container = document.createElement('div');
+      container.className = 'imgContainer';
+
+      const img = document.createElement('img');
+      // show annotated as thumbnail by default if available
+      img.src = annotated || originalDataUrl;
+      img.className = 'imgThumb';
+
+      const btn = document.createElement('button');
+      btn.className = 'zoomBtn';
+      btn.textContent = 'Phóng to';
+
+      btn.addEventListener('click', ()=>{
+        openModal(originalDataUrl, caption, container.dataset.annotated || null);
+      });
+
+      container.appendChild(img);
+      container.appendChild(btn);
+      if(caption){
+        const cap = document.createElement('div');
+        cap.className = 'bubble';
+        cap.style.marginTop = '6px';
+        cap.innerHTML = escapeHtml(caption).replace(/\n/g, '<br>');
+        container.appendChild(cap);
+      }
+
+      // store annotated and original data for modal toggle (original == annotated here)
+      container.dataset.annotated = annotated || '';
+      container.dataset.original = originalDataUrl || '';
+
+      wrapper.appendChild(container);
+      messagesEl.appendChild(wrapper);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    // Modal create/use
+    let modalEl = null;
+    function ensureModal(){
+      if(modalEl) return modalEl;
+      modalEl = document.createElement('div');
+      modalEl.className = 'modal';
+
+      const closeBtn = document.createElement('div');
+      closeBtn.className = 'modalClose';
+      closeBtn.textContent = 'Đóng';
+      closeBtn.addEventListener('click', closeModal);
+
+      const content = document.createElement('div');
+      content.className = 'modalContent';
+
+      const img = document.createElement('img');
+      img.className = 'modalImg';
+
+      const caption = document.createElement('div');
+      caption.className = 'modalCaption';
+
+      // Controls: toggle annotated / original and download
+      const controls = document.createElement('div');
+      controls.style.marginTop = '8px';
+      const toggleBtn = document.createElement('button');
+      toggleBtn.className = 'modalToggleBtn';
+      toggleBtn.textContent = 'Xem ảnh chú thích';
+      toggleBtn.style.marginRight = '8px';
+      const downloadBtn = document.createElement('button');
+      downloadBtn.textContent = 'Tải xuống';
+      downloadBtn.style.marginRight = '8px';
+
+      controls.appendChild(toggleBtn);
+      controls.appendChild(downloadBtn);
+
+      content.appendChild(img);
+      content.appendChild(caption);
+      content.appendChild(controls);
+
+      modalEl.appendChild(closeBtn);
+      modalEl.appendChild(content);
+      modalEl.addEventListener('click', (e)=>{ if(e.target === modalEl) closeModal(); });
+      document.body.appendChild(modalEl);
+      // Toggle behavior uses dataset so openModal can set initial state
+      toggleBtn.addEventListener('click', ()=>{
+        const original = modalEl.dataset.original;
+        const annotated = modalEl.dataset.annotated;
+        if(!original) return;
+        const currentlyAnnotated = modalEl.dataset.currentAnnotated === 'true';
+        const newIsAnnotated = !currentlyAnnotated;
+        modalEl.querySelector('.modalImg').src = newIsAnnotated ? (annotated || original) : original;
+        modalEl.dataset.currentAnnotated = newIsAnnotated ? 'true' : 'false';
+        toggleBtn.textContent = newIsAnnotated ? 'Xem ảnh gốc' : 'Xem ảnh chú thích';
+      });
+
+      downloadBtn.addEventListener('click', ()=>{
+        const src = modalEl.querySelector('.modalImg').src;
+        const a = document.createElement('a');
+        a.href = src;
+        a.download = 'annotated.jpg';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      });
+
+      return modalEl;
+    }
+
+    function openModal(originalDataUrl, captionText, annotatedDataUrl){
+      const m = ensureModal();
+      m.dataset.original = originalDataUrl;
+      m.dataset.annotated = annotatedDataUrl || originalDataUrl;
+      // show annotated by default in modal
+      m.querySelector('.modalImg').src = annotatedDataUrl || originalDataUrl;
+      m.querySelector('.modalCaption').innerHTML = escapeHtml(captionText || '').replace(/\n/g, '<br>');
+      m.dataset.currentAnnotated = 'true';
+      // set toggleBtn initial label
+      const toggleBtn = m.querySelector('.modalToggleBtn');
+      if(toggleBtn) toggleBtn.textContent = 'Xem ảnh gốc';
+      m.classList.add('open');
+    }
+
+    function closeModal(){
+      if(!modalEl) return;
+      modalEl.classList.remove('open');
+    }
+
+    async function upload(){
+      const file = fileInput.files[0];
+      if(!file) return;
+        const shortFileName = file.name.length > 8
+            ? file.name.substring(0, 3) + '...' + file.name.slice(-5)
+            : file.name;
+
+        append('user', 'Đã chọn file: ' + shortFileName);
+      append('assistant', 'Đang mô tả ảnh...');
+
+      const reader = new FileReader();
+      reader.onload = async function(e){
+        try{
+          const dataUrl = e.target.result; // data:[<mediatype>][;base64],<data>
+          const payload = {
+            data: dataUrl,
+            filename: file.name,
+            contentType: file.type
+          };
+
+          const bodyStr = 'UPLOAD_BASE64:' + JSON.stringify(payload);
+
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ input: bodyStr })
+          });
+          const data = await res.json();
+          messagesEl.removeChild(messagesEl.lastChild);
+
+          if(!res.ok){
+            append('assistant', data.detail || JSON.stringify(data));
+            return;
+          }
+
+          // If server returned an image in data.imageBase64, show annotated image + diagnosis
+          console.log('Upload response', data);
+          if (data && data.data && data.data.imageBase64){
+            const annotated = data.data.annotatedImageBase64 || data.data.imageBase64;
+            // Show annotated image with zoom (thumbnail + zoom button)
+            showImageWithZoom(data.data.imageBase64, data.message || '', annotated);
+            // Clear selected file so user can choose a new one
+            fileInput.value = '';
+            fileNameEl.textContent = 'Chưa chọn file';
+            uploadBtn.disabled = true;
+          } else {
+            append('assistant', data.message || JSON.stringify(data));
+            fileInput.value = '';
+            fileNameEl.textContent = 'Chưa chọn file';
+            uploadBtn.disabled = true;
+          }
+        } catch(err){
+          messagesEl.removeChild(messagesEl.lastChild);
+          append('assistant', 'Lỗi upload: ' + err.message);
+          fileInput.value = '';
+          fileNameEl.textContent = 'Chưa chọn file';
+          uploadBtn.disabled = true;
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+  // Show notice popup when label clicked; open file picker only after user confirms
+  const fileLabelTrigger = document.getElementById('fileLabelTrigger');
+  const uploadNotice = document.getElementById('uploadNotice');
+  const noticeOkBtn = document.getElementById('noticeOkBtn');
+
+  fileLabelTrigger.addEventListener('click', () => {
+    uploadNotice.classList.add('open');
+  });
+
+  noticeOkBtn.addEventListener('click', () => {
+    uploadNotice.classList.remove('open');
+    fileInput.click();
+  });
+
+  uploadNotice.addEventListener('click', (e) => {
+    if (e.target === uploadNotice) uploadNotice.classList.remove('open');
+  });
+
+  // enable upload button when file selected and show file name
+  fileInput.addEventListener('change', ()=>{
+    const f = fileInput.files[0];
+    if(f){
+      fileNameEl.textContent = f.name;
+      uploadBtn.disabled = false;
+    } else {
+      fileNameEl.textContent = 'Chưa chọn file';
+      uploadBtn.disabled = true;
+    }
+  });
+
+    async function send(){
+      const text = inputEl.value.trim();
+      if(!text) return;
+      append('user', text);
+      inputEl.value = '';
+
+      append('assistant', 'Đang xử lý...');
+      try{
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ input: text })
+        });
+        const data = await res.json();
+        // remove last 'Đang xử lý...' bubble
+        messagesEl.removeChild(messagesEl.lastChild);
+
+        if(!res.ok){
+          append('assistant', data.detail || JSON.stringify(data));
+        } else {
+          // If response contains image data, show it
+          if (data && data.data && data.data.imageBase64){
+            showImageWithZoom(data.data.imageBase64, data.message || '');
+          } else {
+            append('assistant', data.message || JSON.stringify(data));
+          }
+        }
+      } catch(err){
+        messagesEl.removeChild(messagesEl.lastChild);
+        append('assistant', 'Lỗi khi gọi API: ' + err.message);
+      }
+    }
+
+    sendBtn.addEventListener('click', send);
+    inputEl.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') send(); });
+    uploadBtn.addEventListener('click', upload);
+  </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "EDj8I1ye9jg=",
+  "success": true,
+  "projectFilePath": "D:\\Cá nhân\\OpenRouterClient-main\\OpenRouterClient-main\\OpenRouterClient\\Ruter\\Ruter.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\lamnd28\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.5\\microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512",
+    "C:\\Users\\lamnd28\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

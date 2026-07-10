@@ -1,0 +1,71 @@
+wwwroot\admin.html
+wwwroot\index.html
+wwwroot\uploads\1783150982364_3511073737759625294_3511073737759625294_f3e2a7731f7e9fbdf10370f6b6e8ac73_20260704144328.jpg
+wwwroot\uploads\1783150982364_3511073737759625294_3511073737759625294_f3e2a7731f7e9fbdf10370f6b6e8ac73_20260704144423.jpg
+wwwroot\uploads\1783150982364_3511073737759625294_3511073737759625294_f3e2a7731f7e9fbdf10370f6b6e8ac73_20260704145159.jpg
+wwwroot\uploads\1783150982364_3511073737759625294_3511073737759625294_f3e2a7731f7e9fbdf10370f6b6e8ac73_20260704155548.jpg
+wwwroot\uploads\2a4d2587-1f9c-4ee6-8874-2406169b85b9_20260605155908.png
+wwwroot\uploads\annotated_20260622173523.jpg
+wwwroot\uploads\annotated_20260622173523_annotated.jpg
+wwwroot\uploads\annotated_20260704133336.jpg
+wwwroot\uploads\annotated_20260704133336_annotated.jpg
+wwwroot\uploads\ChatGPT Image Jan 12, 2026, 02_03_50 PM_20260605170932.png
+wwwroot\uploads\ChatGPT Image Jan 12, 2026, 02_03_50 PM_20260605170932_annotated.png
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605152006.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605152615.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605153009.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605153927.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605153927_annotated.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605154205.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605154205_annotated.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605154418.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605154418_annotated.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605154712.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605154712_annotated.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605154811.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605154811_annotated.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605154954.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605154954_annotated.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605155032.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605155032_annotated.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605155229.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605155229_annotated.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605155412.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605155412_annotated.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605155701.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605155854.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605160234.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605160427.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605171002.jpg
+wwwroot\uploads\f8685f1f-ac5f-4d57-ad8b-a0dcf0646632_20260605171002_annotated.jpg
+wwwroot\uploads\image1_1084_png.rf.d9da08b77872f6b4282f2700d216b9b3_20260704154824.jpg
+wwwroot\uploads\image1_1084_png.rf.d9da08b77872f6b4282f2700d216b9b3_20260704154901.jpg
+wwwroot\uploads\image1_252_png.rf.81a8e63687d8630d28257570bd5fcd80_20260704154426.jpg
+wwwroot\uploads\image1_300_png.rf.68c69212cc50665b9c1ffa7dd4eb25a4_20260704155259.jpg
+wwwroot\uploads\image1_508_png.rf.63f80ba9eca75737d7435b9122d70288_20260704155320.jpg
+wwwroot\uploads\image1_5740_png.rf.9e24e104e841b740e0389637d5e6d2d7_20260704154730.jpg
+wwwroot\uploads\x-quang-humeral-fx (1)_20260605171735.jpg
+wwwroot\uploads\x-quang-humeral-fx (1)_20260605171735_annotated.jpg
+wwwroot\uploads\x-quang-humeral-fx (1)_20260622173553.jpg
+wwwroot\uploads\x-quang-humeral-fx (1)_20260622173553_annotated.jpg
+wwwroot\uploads\x-quang-humeral-fx (1)_20260626152040.jpg
+wwwroot\uploads\x-quang-humeral-fx (1)_20260626152040_annotated.jpg
+wwwroot\uploads\x-quang-humeral-fx (1)_20260703142902.jpg
+wwwroot\uploads\x-quang-humeral-fx (1)_20260703142902_annotated.jpg
+wwwroot\uploads\x-quang-humeral-fx (1)_20260704133441.jpg
+wwwroot\uploads\x-quang-humeral-fx (1)_20260704133441_annotated.jpg
+wwwroot\uploads\x-quang-humeral-fx_20260704133417.jpg
+wwwroot\uploads\x-quang-humeral-fx_20260704133417_annotated.jpg
+wwwroot\uploads\z7453649243499_fc11d63172a5b2630368d287573cb66e_20260605153649.jpg
+wwwroot\uploads\z7523656713324_4a80d6d7f89ab453a4f1b75d97e20920_20260605153433.jpg
+wwwroot\uploads\z7523656713324_4a80d6d7f89ab453a4f1b75d97e20920_20260605153502.jpg
+wwwroot\uploads\z7524132222016_0b167c2695fe8ff4eb63bc284cb69d29_20260605152116.jpg
+wwwroot\uploads\z7524132222016_0b167c2695fe8ff4eb63bc284cb69d29_20260605160241.jpg
+wwwroot\uploads\z7741295746494_00c6ef47062338cae0b25969c73bbb84_20260605154531.jpg
+wwwroot\uploads\z7741295746494_00c6ef47062338cae0b25969c73bbb84_20260605154531_annotated.jpg
+wwwroot\uploads\z7741295746494_00c6ef47062338cae0b25969c73bbb84_20260605155605.jpg
+wwwroot\uploads\z7741295746494_00c6ef47062338cae0b25969c73bbb84_20260605155605_annotated.jpg
+wwwroot\uploads\z7741295746494_00c6ef47062338cae0b25969c73bbb84_20260605160534.jpg
+wwwroot\uploads\z7741295746494_00c6ef47062338cae0b25969c73bbb84_20260605160931.jpg
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\wwwroot\admin.html
+D:\Cá nhân\OpenRouterClient-main\OpenRouterClient-main\OpenRouterClient\Chatbot\wwwroot\index.html

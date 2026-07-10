@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="logo.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageIcon>logo.png</PackageIcon>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>OpenRouterClient</Title>
+        <PackageId>OpenRouterClient</PackageId>
+        <PublishAot>true</PublishAot>
+        <IsAotCompatible>true</IsAotCompatible>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Version>1.0.4</Version>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Authors>Kareem Magdy</Authors>
+        <Company>YourCompany</Company>
+        <Description>A C# and .NET client designed for developers seeking a simple and flexible way to integrate OpenRouter’s advanced AI models into their applications.</Description>
+        <PackageTags>openrouter nlp chatgpt llm ai dotnet ml api csharp</PackageTags>
+        <PackageProjectUrl>https://github.com/KareemMagdy55/OpenRouterClient</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/KareemMagdy55/OpenRouterClient</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <IncludeSymbols>true</IncludeSymbols>
+        <IncludeSource>true</IncludeSource>
+    </PropertyGroup>
+
+</Project>

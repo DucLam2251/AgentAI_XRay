@@ -1,0 +1,40 @@
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.deps.json
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.dll
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.pdb
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.GeneratedMSBuildEditorConfig.editorconfig
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.AssemblyInfoInputs.cache
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.AssemblyInfo.cs
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.csproj.CoreCompileInputs.cache
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.sourcelink.json
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.dll
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/refint/OpenRouterClient.dll
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.pdb
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/ref/OpenRouterClient.dll
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.xml
+K:/Kareem's/Programming vol.3/Github/OpenRouterClient/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.xml
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.deps.json
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.dll
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.pdb
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.xml
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.GeneratedMSBuildEditorConfig.editorconfig
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.AssemblyInfoInputs.cache
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.AssemblyInfo.cs
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.csproj.CoreCompileInputs.cache
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.dll
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/refint/OpenRouterClient.dll
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.xml
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.pdb
+D:/Cá nhân/OpenRouterClient-main/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/ref/OpenRouterClient.dll
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.deps.json
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.dll
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.pdb
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/bin/Debug/net9.0/OpenRouterClient.xml
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.GeneratedMSBuildEditorConfig.editorconfig
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.AssemblyInfoInputs.cache
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.AssemblyInfo.cs
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.csproj.CoreCompileInputs.cache
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.dll
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/refint/OpenRouterClient.dll
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.xml
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/OpenRouterClient.pdb
+/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/Debug/net9.0/ref/OpenRouterClient.dll

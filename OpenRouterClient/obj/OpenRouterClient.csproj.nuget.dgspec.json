@@ -1,0 +1,97 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/OpenRouterClient.csproj": {}
+  },
+  "projects": {
+    "/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/OpenRouterClient.csproj": {
+      "version": "1.0.4",
+      "restore": {
+        "projectUniqueName": "/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/OpenRouterClient.csproj",
+        "projectName": "OpenRouterClient",
+        "projectPath": "/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/OpenRouterClient.csproj",
+        "packagesPath": "/Users/minhmannh2001/.nuget/packages/",
+        "outputPath": "/Users/minhmannh2001/Downloads/OpenRouterClient-main/OpenRouterClient/OpenRouterClient/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/minhmannh2001/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "framework": "net9.0",
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "framework": "net9.0",
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.DotNet.ILCompiler": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.17, )",
+              "autoReferenced": true
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.17, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.17, 9.0.17]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[9.0.17, 9.0.17]"
+            },
+            {
+              "name": "runtime.osx-arm64.Microsoft.DotNet.ILCompiler",
+              "version": "[9.0.17, 9.0.17]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/Users/minhmannh2001/.dotnet/sdk/10.0.301/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

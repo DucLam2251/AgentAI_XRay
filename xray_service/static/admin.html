@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Xray Service — Admin</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+    body { font-family: system-ui, sans-serif; background: #0f0f17; color: #cdd6f4; min-height: 100vh }
+
+    .topbar { background: #1e1e2e; border-bottom: 1px solid #313244; padding: 14px 24px;
+              display: flex; align-items: center; justify-content: space-between }
+    .topbar h1 { font-size: 16px; font-weight: 600; color: #cba6f7 }
+    .badge { font-size: 12px; padding: 3px 10px; border-radius: 99px; background: #313244; color: #a6e3a1 }
+    .badge.error { color: #f38ba8 }
+
+    .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 24px; max-width: 1100px; margin: 0 auto }
+    @media(max-width: 700px){ .layout { grid-template-columns: 1fr } }
+
+    .card { background: #1e1e2e; border: 1px solid #313244; border-radius: 10px; overflow: hidden }
+    .card-header { padding: 14px 18px; border-bottom: 1px solid #313244; font-weight: 600; font-size: 14px; color: #89b4fa }
+    .card-body { padding: 18px }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px }
+    th { text-align: left; color: #6c7086; font-weight: 500; padding: 6px 8px; border-bottom: 1px solid #313244 }
+    td { padding: 8px 8px; border-bottom: 1px solid #1a1a27; vertical-align: middle }
+    tr:last-child td { border-bottom: none }
+    .active-chip { background: #a6e3a1; color: #1e1e2e; font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 600 }
+    .origin-chip { background: #313244; color: #cba6f7; font-size: 11px; padding: 2px 8px; border-radius: 99px }
+
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 6px;
+           font-size: 13px; border: none; cursor: pointer; transition: opacity .15s }
+    .btn:disabled { opacity: .4; cursor: not-allowed }
+    .btn:hover:not(:disabled) { opacity: .85 }
+    .btn-primary { background: #cba6f7; color: #1e1e2e; font-weight: 600 }
+    .btn-green  { background: #a6e3a1; color: #1e1e2e; font-weight: 600 }
+    .btn-red    { background: #f38ba8; color: #1e1e2e; font-weight: 600 }
+    .btn-ghost  { background: #313244; color: #cdd6f4 }
+
+    .form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px }
+    label { font-size: 12px; color: #6c7086 }
+    input, select { background: #181825; border: 1px solid #313244; border-radius: 6px; color: #cdd6f4;
+                    padding: 8px 10px; font-size: 13px; width: 100% }
+    input:focus, select:focus { outline: none; border-color: #cba6f7 }
+
+    .log { background: #11111b; border-radius: 6px; padding: 12px; font-family: monospace;
+           font-size: 12px; height: 240px; overflow-y: auto; color: #a6adc8; line-height: 1.6 }
+    .log .ok   { color: #a6e3a1 }
+    .log .err  { color: #f38ba8 }
+    .log .warn { color: #fab387 }
+
+    .status-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px }
+    .status-pill { padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600 }
+    .s-idle    { background: #313244; color: #a6adc8 }
+    .s-running { background: #fab387; color: #1e1e2e }
+    .s-done    { background: #a6e3a1; color: #1e1e2e }
+    .s-error   { background: #f38ba8; color: #1e1e2e }
+    .s-stopped { background: #89dceb; color: #1e1e2e }
+
+    .progress-wrap { margin: -2px 0 14px }
+    .progress-meta { display:flex; justify-content:space-between; font-size:12px; color:#a6adc8; margin-bottom:6px }
+    .progress-track { width:100%; height:10px; background:#11111b; border:1px solid #313244; border-radius:999px; overflow:hidden }
+    .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#89b4fa,#a6e3a1); transition:width .35s ease }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+
+    /* Model detail modal */
+    .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:100; align-items:center; justify-content:center }
+    .overlay.open { display:flex }
+    .modal-box { background:#1e1e2e; border:1px solid #313244; border-radius:12px; width:90%; max-width:900px;
+                 max-height:90vh; overflow-y:auto; padding:24px; position:relative }
+    .modal-box h2 { font-size:15px; color:#cba6f7; margin-bottom:18px; font-family:monospace }
+    .modal-close { position:absolute; right:16px; top:16px; background:#313244; border:none; color:#cdd6f4;
+                   border-radius:6px; padding:4px 10px; cursor:pointer; font-size:13px }
+    .metrics-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:20px }
+    .metric-card { background:#181825; border:1px solid #313244; border-radius:8px; padding:14px; text-align:center }
+    .metric-card .val { font-size:22px; font-weight:700; color:#89b4fa }
+    .metric-card .lbl { font-size:11px; color:#6c7086; margin-top:4px }
+    .config-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px }
+    .config-tag { background:#313244; border-radius:6px; padding:4px 10px; font-size:12px; color:#cdd6f4 }
+    .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px }
+    .chart-grid img { width:100%; border-radius:8px; border:1px solid #313244 }
+    .chart-label { font-size:12px; color:#6c7086; margin-bottom:6px }
+    tr.clickable { cursor:pointer }
+    tr.clickable:hover td { background:#252535 }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>🦴 Xray Service — Admin</h1>
+  <span class="badge" id="serviceBadge">Đang kiểm tra...</span>
+</div>
+
+<div class="layout">
+
+  <!-- Model list -->
+  <div class="card">
+    <div class="card-header">Danh sách Model</div>
+    <div class="card-body">
+      <table>
+        <thead><tr><th>Tên</th><th>Kích thước</th><th>Thời gian</th><th>Trạng thái</th><th></th></tr></thead>
+        <tbody id="modelTbody"><tr><td colspan="5" style="color:#6c7086">Đang tải...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Training -->
+  <div class="card">
+    <div class="card-header">Training</div>
+    <div class="card-body">
+      <div class="status-row">
+        <span>Trạng thái:</span>
+        <span class="status-pill s-idle" id="trainStatus">Idle</span>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span id="trainEpochText">Epoch: 0/0</span>
+          <span id="trainPercentText">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="trainProgressBar"></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="form-row">
+          <label>Data YAML path</label>
+          <input id="dataPath" value="dataset/data.yaml" />
+        </div>
+        <div class="form-row">
+          <label>Base model</label>
+          <select id="baseModel">
+            <option value="yolov8n.pt">yolov8n (nano — nhanh)</option>
+            <option value="yolov8s.pt" selected>yolov8s (small — cân bằng)</option>
+            <option value="yolov8m.pt">yolov8m (medium — chính xác hơn)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Epochs</label>
+          <input id="epochs" type="number" value="100" min="1" />
+        </div>
+        <div class="form-row">
+          <label>Batch size</label>
+          <input id="batch" type="number" value="16" min="1" />
+        </div>
+        <div class="form-row">
+          <label>Image size</label>
+          <input id="imgsz" type="number" value="640" step="32" />
+        </div>
+        <div class="form-row">
+          <label>Device</label>
+          <select id="device">
+            <option value="auto" selected>auto (ưu tiên GPU, fallback CPU)</option>
+            <option value="0">GPU 0 (cuda:0)</option>
+            <option value="cpu">CPU</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button class="btn btn-green" id="startTrainBtn" style="flex:1" onclick="startTraining()">▶ Bắt đầu Train</button>
+        <button class="btn btn-red" id="stopTrainBtn" style="flex:1" onclick="stopTraining()" disabled>■ Dừng</button>
+      </div>
+
+      <div class="log" id="trainLog"><span style="color:#6c7086">Log sẽ xuất hiện ở đây...</span></div>
+
+      <button class="btn btn-primary" id="deployBtn" style="margin-top:10px;width:100%" disabled onclick="deployAndActivate()">
+        🚀 Kích hoạt model vừa train
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Model detail modal -->
+<div class="overlay" id="modelDetailOverlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeDetail()">✕ Đóng</button>
+    <h2 id="detailTitle"></h2>
+
+    <div class="config-row" id="detailConfig"></div>
+
+    <div class="metrics-grid" id="detailMetrics"></div>
+
+    <div class="chart-grid" id="detailCharts"></div>
+  </div>
+</div>
+
+<script>
+  const API = 'http://localhost:8000'
+  let pollInterval = null
+  let latestNewModel = null
+
+  // ── Health ──────────────────────────────────────────────────────────────
+  async function checkHealth(){
+    try {
+      const r = await fetch(`${API}/health`)
+      const d = await r.json()
+      const el = document.getElementById('serviceBadge')
+      el.textContent = `✓ Online — ${d.model}`
+      el.className = 'badge'
+    } catch {
+      const el = document.getElementById('serviceBadge')
+      el.textContent = '✗ Service không phản hồi'
+      el.className = 'badge error'
+    }
+  }
+
+  // ── Model list ──────────────────────────────────────────────────────────
+  async function loadModels(){
+    try {
+      const r = await fetch(`${API}/models/list`)
+      const { models } = await r.json()
+      const tbody = document.getElementById('modelTbody')
+      if (!models.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="color:#6c7086">Không có model nào</td></tr>'
+        return
+      }
+      tbody.innerHTML = models.map(m => {
+        const isOrigin = m.is_origin
+        const statusCell = (isOrigin ? '<span class="origin-chip">Gốc</span> ' : '')
+          + (m.active ? '<span class="active-chip">Active</span>' : '')
+        let actions = ''
+        if (!m.active) {
+          actions += `<button class="btn btn-ghost" onclick="activateModel('${m.name}')">Chọn</button>`
+          if (!isOrigin) actions += ` <button class="btn btn-red" onclick="deleteModel('${m.name}')">Xóa</button>`
+        }
+        const rowClick = !isOrigin ? `onclick="showModelDetail('${m.name}')"` : ''
+        const nameStyle = !isOrigin ? 'cursor:pointer;color:#89b4fa;text-decoration:underline dotted' : ''
+        return `<tr>
+          <td style="font-family:monospace;font-size:12px;${nameStyle}" ${rowClick}>${m.name}</td>
+          <td>${m.size_mb} MB</td>
+          <td style="font-size:12px;color:#6c7086">${m.modified}</td>
+          <td>${statusCell}</td>
+          <td style="display:flex;gap:6px">${actions}</td>
+        </tr>`
+      }).join('')
+    } catch {
+      document.getElementById('modelTbody').innerHTML = '<tr><td colspan="5" style="color:#f38ba8">Lỗi tải danh sách</td></tr>'
+    }
+  }
+
+  // ── Model detail ─────────────────────────────────────────────────────────
+  async function showModelDetail(name){
+    document.getElementById('modelDetailOverlay').classList.add('open')
+    document.getElementById('detailTitle').textContent = `📄 ${name}`
+    document.getElementById('detailConfig').innerHTML = '<span style="color:#6c7086">Đang tải...</span>'
+    document.getElementById('detailMetrics').innerHTML = ''
+    document.getElementById('detailCharts').innerHTML = ''
+
+    const r = await fetch(`${API}/models/${name}/info`)
+    if (!r.ok) {
+      document.getElementById('detailConfig').innerHTML = '<span style="color:#f38ba8">Không tìm thấy metadata cho model này</span>'
+      return
+    }
+    const d = await r.json()
+
+    // Config tags
+    const cfg = d.config || {}
+    document.getElementById('detailConfig').innerHTML = [
+      `Epochs: <b>${cfg.epochs ?? '—'}</b>`,
+      `Base model: <b>${cfg.base_model ?? '—'}</b>`,
+      `Batch: <b>${cfg.batch ?? '—'}</b>`,
+      `Image size: <b>${cfg.imgsz ?? '—'}</b>`,
+      `Dataset: <b>${cfg.data ?? '—'}</b>`,
+      `Trained at: <b>${d.trained_at ?? '—'}</b>`,
+    ].map(t => `<span class="config-tag">${t}</span>`).join('')
+
+    // Metrics
+    const m = d.metrics || {}
+    const metricDefs = [
+      { key: 'mAP50',     label: 'mAP@50' },
+      { key: 'mAP50_95',  label: 'mAP@50-95' },
+      { key: 'precision', label: 'Precision' },
+      { key: 'recall',    label: 'Recall' },
+      { key: 'epochs_done', label: 'Epochs' },
+    ]
+    document.getElementById('detailMetrics').innerHTML = metricDefs.map(({ key, label }) => {
+      const raw = m[key] ?? ''
+      const val = raw !== '' && !isNaN(raw) && key !== 'epochs_done'
+        ? (parseFloat(raw) * 100).toFixed(1) + '%'
+        : (raw || '—')
+      return `<div class="metric-card"><div class="val">${val}</div><div class="lbl">${label}</div></div>`
+    }).join('')
+
+    // Charts
+    const imgs = d.images || {}
+    const charts = [
+      { key: 'results',          label: 'Training Curves (Loss & mAP)' },
+      { key: 'confusion_matrix', label: 'Confusion Matrix' },
+      { key: 'val_pred',         label: 'Validation Predictions' },
+    ].filter(c => imgs[c.key])
+    document.getElementById('detailCharts').innerHTML = charts.map(c =>
+      `<div><div class="chart-label">${c.label}</div>
+       <img src="data:image/png;base64,${imgs[c.key]}" /></div>`
+    ).join('')
+  }
+
+  function closeDetail(){
+    document.getElementById('modelDetailOverlay').classList.remove('open')
+  }
+
+  document.getElementById('modelDetailOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modelDetailOverlay')) closeDetail()
+  })
+
+  async function activateModel(name){
+    const r = await fetch(`${API}/models/activate/${name}`, {method:'POST'})
+    if(r.ok){ checkHealth(); loadModels() }
+    else { const d = await r.json(); alert(d.detail || 'Lỗi') }
+  }
+
+  async function deleteModel(name){
+    if(!confirm(`Xóa "${name}"?`)) return
+    const r = await fetch(`${API}/models/${name}`, {method:'DELETE'})
+    if(r.ok) loadModels()
+    else { const d = await r.json(); alert(d.detail || 'Lỗi') }
+  }
+
+  // ── Training ─────────────────────────────────────────────────────────────
+  async function startTraining(){
+    const params = new URLSearchParams({
+      data: document.getElementById('dataPath').value,
+      epochs: document.getElementById('epochs').value,
+      base_model: document.getElementById('baseModel').value,
+      imgsz: document.getElementById('imgsz').value,
+      batch: document.getElementById('batch').value,
+      device: document.getElementById('device').value,
+    })
+    const r = await fetch(`${API}/train/start?${params}`, {method:'POST'})
+    if(r.ok){
+      latestNewModel = null
+      document.getElementById('trainLog').innerHTML = ''
+      startPolling()
+    } else {
+      const d = await r.json()
+      alert(d.detail || 'Lỗi bắt đầu training')
+    }
+  }
+
+  async function stopTraining(){
+    await fetch(`${API}/train/stop`, {method:'POST'})
+  }
+
+  async function deployAndActivate(){
+    if(!latestNewModel) return
+    const r = await fetch(`${API}/models/activate/${latestNewModel}`, {method:'POST'})
+    if(r.ok){
+      alert(`✅ Đã kích hoạt: ${latestNewModel}`)
+      checkHealth()
+      loadModels()
+      document.getElementById('deployBtn').disabled = true
+    } else {
+      const d = await r.json(); alert(d.detail || 'Lỗi')
+    }
+  }
+
+  async function pollTraining(){
+    const r = await fetch(`${API}/train/status`)
+    const d = await r.json()
+
+    const pill = document.getElementById('trainStatus')
+    const states = {idle:'s-idle',running:'s-running',done:'s-done',error:'s-error',stopped:'s-stopped'}
+    const labels = {idle:'Idle',running:'⏳ Đang train...',done:'✅ Hoàn thành',error:'❌ Lỗi',stopped:'⚠️ Đã dừng'}
+    pill.className = 'status-pill ' + (states[d.status] || 's-idle')
+    pill.textContent = labels[d.status] || d.status
+
+    const pctRaw = Number.isFinite(Number(d.progress_pct)) ? Number(d.progress_pct) : 0
+    const pct = Math.max(0, Math.min(100, Math.round(pctRaw)))
+    const cur = Number.isFinite(Number(d.current_epoch)) ? Number(d.current_epoch) : 0
+    const total = Number.isFinite(Number(d.total_epochs)) ? Number(d.total_epochs) : 0
+    document.getElementById('trainProgressBar').style.width = `${pct}%`
+    document.getElementById('trainPercentText').textContent = `${pct}%`
+    document.getElementById('trainEpochText').textContent = `Epoch: ${cur}/${total}`
+
+    const running = d.status === 'running'
+    document.getElementById('startTrainBtn').disabled = running
+    document.getElementById('stopTrainBtn').disabled = !running
+
+    if(d.new_model){
+      latestNewModel = d.new_model
+      document.getElementById('deployBtn').disabled = false
+      document.getElementById('deployBtn').textContent = `🚀 Kích hoạt: ${d.new_model}`
+      loadModels()
+    }
+
+    const log = document.getElementById('trainLog')
+    log.innerHTML = d.log.map(l => {
+      if(l.includes('✅')) return `<div class="ok">${l}</div>`
+      if(l.includes('❌')) return `<div class="err">${l}</div>`
+      if(l.includes('⚠️')) return `<div class="warn">${l}</div>`
+      return `<div>${l}</div>`
+    }).join('') || '<span style="color:#6c7086">Chưa có log</span>'
+    log.scrollTop = log.scrollHeight
+
+    if(!running && pollInterval){ clearInterval(pollInterval); pollInterval = null }
+  }
+
+  function startPolling(){
+    if(pollInterval) clearInterval(pollInterval)
+    pollInterval = setInterval(pollTraining, 2000)
+    pollTraining()
+  }
+
+  // ── Init ─────────────────────────────────────────────────────────────────
+  checkHealth()
+  loadModels()
+  pollTraining()
+  setInterval(checkHealth, 10000)
+  setInterval(loadModels, 15000)
+</script>
+</body>
+</html>

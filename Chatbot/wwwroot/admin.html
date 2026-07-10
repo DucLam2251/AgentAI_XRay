@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quản lý Diseases (CRUD)</title>
+  <style>
+    body{font-family:Segoe UI,Roboto,Arial;margin:20px}
+    table{border-collapse:collapse;width:100%;margin-top:12px}
+    th,td{border:1px solid #ddd;padding:8px}
+    th{background:#f3f3f3}
+    textarea,input{width:100%;box-sizing:border-box}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .controls{margin-top:12px}
+    .btn{padding:8px 12px;border:0;background:#0078d4;color:#fff;cursor:pointer}
+    .btn.secondary{background:#666}
+    .btn.danger{background:#c0392b}
+    .small{font-size:0.9rem;padding:6px 8px}
+    .message{margin-top:8px}
+    #listArea{height:50vh;overflow-y:auto;border:1px solid #ddd;padding:8px}
+  </style>
+</head>
+<body>
+  <h2>Quản lý bệnh (diseases.json)</h2>
+  <div>
+    <button class="btn" onclick="loadList()">Tải danh sách</button>
+    <button class="btn secondary" onclick="clearForm()">Tạo mới</button>
+  </div>
+
+  <div id="listArea">
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th>Id</th><th>Tên bệnh</th><th>Severity</th><th>Emergency</th><th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <h3 id="formTitle">Thêm / Sửa bệnh</h3>
+  <div>
+    <div style="max-width:1000px">
+      <div class="grid">
+        <div>
+          <label> disease_id</label>
+          <input id="d_disease_id" />
+        </div>
+        <div>
+          <label> disease_name</label>
+          <input id="d_disease_name" />
+        </div>
+        <div>
+          <label> severity (int)</label>
+          <input id="d_severity" type="number" />
+        </div>
+        <div>
+          <label> emergency_level (int)</label>
+          <input id="d_emergency_level" type="number" />
+        </div>
+      </div>
+
+      <div style="margin-top:8px">
+        <label> treatment_duration</label>
+        <input id="d_treatment_duration" />
+      </div>
+
+      <div style="margin-top:8px" class="grid">
+        <div>
+          <label> treatment_method (phân tách bằng dấu phẩy)</label>
+          <textarea id="d_treatment_method" rows="3"></textarea>
+        </div>
+        <div>
+          <label> xray_findings (phân tách bằng dấu phẩy)</label>
+          <textarea id="d_xray_findings" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div style="margin-top:8px" class="grid">
+        <div>
+          <label> red_flags (phân tách bằng dấu phẩy)</label>
+          <textarea id="d_red_flags" rows="3"></textarea>
+        </div>
+        <div>
+          <label> confidence_keywords.primary (phân tách bằng dấu phẩy)</label>
+          <textarea id="d_conf_primary" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div style="margin-top:8px" class="grid">
+        <div>
+          <label> confidence_keywords.secondary</label>
+          <textarea id="d_conf_secondary" rows="2"></textarea>
+        </div>
+        <div>
+          <label> confidence_keywords.symptoms</label>
+          <textarea id="d_conf_symptoms" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div style="margin-top:8px">
+        <label> confidence_keywords.negative</label>
+        <textarea id="d_conf_negative" rows="2"></textarea>
+      </div>
+
+      <div class="controls">
+        <button class="btn" onclick="saveItem()">Lưu</button>
+        <button class="btn secondary" onclick="clearForm()">Hủy</button>
+        <span class="message" id="msg"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const apiBase = '';
+    let editingId = null;
+
+    function showMessage(t){
+      const el = document.getElementById('msg'); el.textContent = t; setTimeout(()=>el.textContent='',3000);
+    }
+
+    async function loadList(){
+      const res = await fetch(apiBase + '/api/diseases');
+      if(!res.ok){ showMessage('Lỗi tải danh sách'); return; }
+      const data = await res.json();
+      const tbody = document.getElementById('tbody'); tbody.innerHTML = '';
+      data.forEach(it=>{
+        const tr = document.createElement('tr');
+        const id = it.disease_id ?? '';
+        tr.innerHTML = `<td>${id}</td><td>${it.disease_name ?? ''}</td><td>${it.severity ?? ''}</td><td>${it.emergency_level ?? ''}</td><td>
+          <button class='small btn' onclick="editItem('${encodeURIComponent(id)}')">Sửa</button>
+          <button class='small btn danger' onclick="deleteItem('${encodeURIComponent(id)}')">Xóa</button>
+        </td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function editItem(idEncoded){
+      const id = decodeURIComponent(idEncoded);
+      const res = await fetch(apiBase + '/api/diseases/' + encodeURIComponent(id));
+      if(!res.ok){ showMessage('Không tìm thấy'); return; }
+      const it = await res.json();
+      editingId = it.disease_id;
+      document.getElementById('formTitle').textContent = 'Sửa bệnh ' + editingId;
+      document.getElementById('d_disease_id').value = it.disease_id ?? '';
+      document.getElementById('d_disease_name').value = it.disease_name ?? '';
+      document.getElementById('d_severity').value = it.severity ?? '';
+      document.getElementById('d_emergency_level').value = it.emergency_level ?? '';
+      document.getElementById('d_treatment_duration').value = it.treatment_duration ?? '';
+      document.getElementById('d_treatment_method').value = arrayToString(it.treatment_method);
+      document.getElementById('d_xray_findings').value = arrayToString(it.xray_findings);
+      document.getElementById('d_red_flags').value = arrayToString(it.red_flags);
+      document.getElementById('d_conf_primary').value = arrayToString((it.confidence_keywords||{}).primary);
+      document.getElementById('d_conf_secondary').value = arrayToString((it.confidence_keywords||{}).secondary);
+      document.getElementById('d_conf_symptoms').value = arrayToString((it.confidence_keywords||{}).symptoms);
+      document.getElementById('d_conf_negative').value = arrayToString((it.confidence_keywords||{}).negative);
+      window.scrollTo(0,document.body.scrollHeight);
+    }
+
+    function arrayToString(a){ if(!a) return ''; if(Array.isArray(a)) return a.join(', '); return '' }
+    function parseArray(s){ if(!s) return []; return s.split(',').map(x=>x.trim()).filter(x=>x.length>0) }
+
+    async function saveItem(){
+      const obj = {
+        disease_id: document.getElementById('d_disease_id').value.trim(),
+        disease_name: document.getElementById('d_disease_name').value.trim(),
+        severity: parseInt(document.getElementById('d_severity').value) || 0,
+        emergency_level: parseInt(document.getElementById('d_emergency_level').value) || 0,
+        treatment_duration: document.getElementById('d_treatment_duration').value.trim(),
+        treatment_method: parseArray(document.getElementById('d_treatment_method').value),
+        xray_findings: parseArray(document.getElementById('d_xray_findings').value),
+        red_flags: parseArray(document.getElementById('d_red_flags').value),
+        confidence_keywords: {
+          primary: parseArray(document.getElementById('d_conf_primary').value),
+          secondary: parseArray(document.getElementById('d_conf_secondary').value),
+          symptoms: parseArray(document.getElementById('d_conf_symptoms').value),
+          negative: parseArray(document.getElementById('d_conf_negative').value)
+        }
+      };
+
+      if(!obj.disease_id){ showMessage('disease_id bắt buộc'); return; }
+
+      if(editingId && editingId === obj.disease_id){
+        // update
+        const res = await fetch(apiBase + '/api/diseases/' + encodeURIComponent(obj.disease_id), {
+          method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(obj)
+        });
+        if(!res.ok){ showMessage('Lỗi khi cập nhật'); return; }
+        showMessage('Đã cập nhật');
+      } else {
+        // create
+        const res = await fetch(apiBase + '/api/diseases', {
+          method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(obj)
+        });
+        if(!res.ok){ const t = await res.text(); showMessage('Lỗi tạo: '+t); return; }
+        showMessage('Đã tạo mới');
+      }
+      clearForm();
+      await loadList();
+    }
+
+    async function deleteItem(idEncoded){
+      const id = decodeURIComponent(idEncoded);
+      if(!confirm('Xóa ' + id + ' ?')) return;
+      const res = await fetch(apiBase + '/api/diseases/' + encodeURIComponent(id), { method: 'DELETE' });
+      if(!res.ok){ showMessage('Lỗi xóa'); return; }
+      showMessage('Đã xóa');
+      await loadList();
+    }
+
+    function clearForm(){
+      editingId = null;
+      document.getElementById('formTitle').textContent = 'Thêm / Sửa bệnh';
+      document.getElementById('d_disease_id').value = '';
+      document.getElementById('d_disease_name').value = '';
+      document.getElementById('d_severity').value = '';
+      document.getElementById('d_emergency_level').value = '';
+      document.getElementById('d_treatment_duration').value = '';
+      document.getElementById('d_treatment_method').value = '';
+      document.getElementById('d_xray_findings').value = '';
+      document.getElementById('d_red_flags').value = '';
+      document.getElementById('d_conf_primary').value = '';
+      document.getElementById('d_conf_secondary').value = '';
+      document.getElementById('d_conf_symptoms').value = '';
+      document.getElementById('d_conf_negative').value = '';
+    }
+
+    // auto load
+    window.addEventListener('load', ()=>{ loadList(); });
+  </script>
+</body>
+</html>
