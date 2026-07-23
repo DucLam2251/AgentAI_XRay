@@ -94,7 +94,9 @@ def train_task(
         raise RuntimeError(f"Training completed without best.pt: {results.save_dir}")
 
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
-    destination = MODEL_DIR / f"{config['registry_key']}.pt"
+    # Keep every successful training result so the admin UI can list and
+    # reactivate older research models instead of overwriting the last one.
+    destination = MODEL_DIR / f"{config['registry_key']}_{datetime.now():%Y%m%d_%H%M%S}.pt"
     shutil.copy2(best, destination)
     return {
         "task_name": name,

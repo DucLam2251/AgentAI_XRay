@@ -589,8 +589,86 @@ def list_models():
             origin = item
         else:
             trained.append(item)
+    registry_models = _research_registry().get("models", {})
+    active_research = {
+        key: Path(entry.get("path", "")).name
+        for key, entry in registry_models.items()
+        if entry.get("path")
+    }
+    research_models = []
+    for f in sorted(
+        RESEARCH_MODELS_DIR.glob("*.pt"),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    ):
+        research_key = next(
+            (key for key in RESEARCH_TASKS_BY_KEY if f.name.startswith(f"{key}_")),
+            None,
+        )
+        # Also support the original non-versioned filenames.
+        if research_key is None and f.stem in RESEARCH_TASKS_BY_KEY:
+            research_key = f.stem
+        if research_key is None:
+            continue
+        research_models.append({
+            "name": f.name,
+            "size_mb": round(f.stat().st_size / 1024 / 1024, 1),
+            "active": active_research.get(research_key) == f.name,
+            "is_origin": False,
+            "kind": "research",
+            "research_key": research_key,
+            "modified": datetime.fromtimestamp(f.stat().st_mtime).strftime("%Y-%m-%d %H:%M"),
+        })
     models = trained + ([origin] if origin else [])
-    return {"models": models}
+    return {"models": research_models + models}
+
+
+RESEARCH_TASKS_BY_KEY = {
+    "fracture_classifier": "fracture-classifier",
+    "fracture_detector": "fracture-detector",
+    "abnormality_classifier": "abnormality-classifier",
+}
+
+
+@app.post("/research/models/activate/{research_key}/{filename}")
+def activate_research_model(research_key: str, filename: str):
+    global _research_models
+    if research_key not in RESEARCH_TASKS_BY_KEY:
+        raise HTTPException(status_code=404, detail="Unknown research model role")
+    if Path(filename).name != filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+    target = RESEARCH_MODELS_DIR / filename
+    if not target.is_file() or target.suffix.lower() != ".pt":
+        raise HTTPException(status_code=404, detail=f"{filename} not found")
+    if not (
+        filename == f"{research_key}.pt"
+        or filename.startswith(f"{research_key}_")
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail=f"{filename} is not a {research_key} model",
+        )
+
+    registry = _research_registry()
+    models = registry.setdefault("models", {})
+    previous = models.get(research_key, {})
+    models[research_key] = {
+        **previous,
+        "task_name": RESEARCH_TASKS_BY_KEY[research_key],
+        "path": str(target.relative_to(Path(__file__).parent)).replace("\\", "/"),
+        "activated_at": datetime.now().isoformat(timespec="seconds"),
+    }
+    RESEARCH_MODELS_DIR.mkdir(parents=True, exist_ok=True)
+    RESEARCH_REGISTRY_FILE.write_text(
+        json.dumps(registry, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    _research_models.pop(research_key, None)
+    return {
+        "success": True,
+        "research_key": research_key,
+        "active": filename,
+    }
 
 
 @app.post("/models/activate/{filename}")

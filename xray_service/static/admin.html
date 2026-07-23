@@ -386,15 +386,21 @@
       }
       tbody.innerHTML = models.map(m => {
         const isOrigin = m.is_origin
+        const isResearch = m.kind === 'research'
         const statusCell = (isOrigin ? '<span class="origin-chip">Gốc</span> ' : '')
+          + (isResearch ? `<span class="origin-chip">Research · ${m.research_key}</span> ` : '')
           + (m.active ? '<span class="active-chip">Active</span>' : '')
         let actions = ''
         if (!m.active) {
-          actions += `<button class="btn btn-ghost" onclick="activateModel('${m.name}')">Chọn</button>`
-          if (!isOrigin) actions += ` <button class="btn btn-red" onclick="deleteModel('${m.name}')">Xóa</button>`
+          if (isResearch) {
+            actions += `<button class="btn btn-ghost" onclick="activateResearchModel('${m.research_key}','${m.name}')">Chọn</button>`
+          } else {
+            actions += `<button class="btn btn-ghost" onclick="activateModel('${m.name}')">Chọn</button>`
+            if (!isOrigin) actions += ` <button class="btn btn-red" onclick="deleteModel('${m.name}')">Xóa</button>`
+          }
         }
-        const rowClick = !isOrigin ? `onclick="showModelDetail('${m.name}')"` : ''
-        const nameStyle = !isOrigin ? 'cursor:pointer;color:#89b4fa;text-decoration:underline dotted' : ''
+        const rowClick = !isOrigin && !isResearch ? `onclick="showModelDetail('${m.name}')"` : ''
+        const nameStyle = !isOrigin && !isResearch ? 'cursor:pointer;color:#89b4fa;text-decoration:underline dotted' : ''
         return `<tr>
           <td class="model-name" title="${m.name}" style="font-family:monospace;font-size:12px;${nameStyle}" ${rowClick}>${m.name}</td>
           <td>${m.size_mb} MB</td>
@@ -493,6 +499,12 @@
     'abnormality-classifier': '3/3 Bất thường MURA',
     all: 'Toàn bộ pipeline'
   }
+
+  async function activateResearchModel(researchKey, name){
+    const r = await fetch(`${API}/research/models/activate/${researchKey}/${name}`, {method:'POST'})
+    if(r.ok){ loadModels(); pollTraining() }
+    else { const d = await r.json(); alert(d.detail || 'Lỗi') }
+  }
   const researchPresets = {
     all: {epochs:30, imgsz:320, batch:1},
     'fracture-classifier': {epochs:30, imgsz:224, batch:8},
@@ -544,6 +556,8 @@
     await pollTraining()
   }
 
+  let lastResearchStatus = null
+
   async function pollTraining(){
     try {
       const r = await fetch(`${API}/research/train/status`)
@@ -570,6 +584,8 @@
       document.getElementById('researchModelState').innerHTML = modelLabels.map(([key, label]) =>
         `<span class="config-tag" style="color:${d.models?.[key] ? '#a6e3a1' : '#fab387'}">${label}: ${d.models?.[key] ? '✓ sẵn sàng' : 'chưa có'}</span>`
       ).join('')
+      if(d.status === 'completed' && lastResearchStatus !== 'completed') loadModels()
+      lastResearchStatus = d.status
 
       const running = d.status === 'running'
       document.getElementById('startTrainBtn').disabled = running
