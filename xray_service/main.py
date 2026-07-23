@@ -1,7 +1,10 @@
 import base64
 import csv
+import gc
 import io
 import json
+import logging
+import math
 import os
 import re
 import shutil
@@ -14,7 +17,25 @@ from fastapi import BackgroundTasks, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from PIL import Image
+import torch
+import yaml
 from ultralytics import YOLO
+
+
+class _PollingAccessLogFilter(logging.Filter):
+    """Hide frequent admin polling requests from Uvicorn's access log."""
+
+    QUIET_PATHS = {"/train/status", "/health", "/models/list"}
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        # Uvicorn access-log args are:
+        # (client_addr, method, full_path, http_version, status_code).
+        if len(record.args) >= 3 and record.args[2] in self.QUIET_PATHS:
+            return False
+        return True
+
+
+logging.getLogger("uvicorn.access").addFilter(_PollingAccessLogFilter())
 
 app = FastAPI(title="Bone Fracture Detection Service")
 
@@ -40,6 +61,13 @@ _train_state: dict = {
     "current_epoch": 0,
     "total_epochs": 0,
     "progress_pct": 0,
+    "images_done": 0,
+    "images_total": 0,
+    "dataset_size": 0,
+    "current_batch": 0,
+    "batches_per_epoch": 0,
+    "elapsed_seconds": 0,
+    "eta_seconds": None,
 }
 
 
@@ -75,6 +103,15 @@ def get_model() -> YOLO:
     return _model
 
 
+def _release_inference_model() -> None:
+    """Release the API inference model before a separate GPU training process starts."""
+    global _model
+    _model = None
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+
 # ─── Core detection ──────────────────────────────────────────────────────────
 
 @app.get("/health")
@@ -95,6 +132,11 @@ def reload_model():
 
 @app.post("/detect")
 async def detect(file: UploadFile = File(...)):
+    if _train_state.get("status") in {"starting", "running"}:
+        raise HTTPException(
+            status_code=409,
+            detail="GPU is being used for training. Stop or finish training before detection.",
+        )
     contents = await file.read()
     try:
         image = Image.open(io.BytesIO(contents)).convert("RGB")
@@ -243,6 +285,31 @@ def delete_model(filename: str):
 
 # ─── Training ────────────────────────────────────────────────────────────────
 
+IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".tif", ".tiff"}
+
+
+def _dataset_image_count(data: str) -> int:
+    """Read a YOLO data YAML and count training images before training starts."""
+    yaml_path = Path(data)
+    if not yaml_path.is_absolute():
+        yaml_path = Path(__file__).parent / yaml_path
+    if not yaml_path.exists():
+        return 0
+
+    config = yaml.safe_load(yaml_path.read_text(encoding="utf-8")) or {}
+    train_source = config.get("train")
+    if not isinstance(train_source, str):
+        return 0
+
+    train_path = Path(train_source)
+    if not train_path.is_absolute():
+        train_path = yaml_path.parent / train_path
+    if train_path.is_dir():
+        return sum(1 for p in train_path.rglob("*") if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES)
+    if train_path.is_file() and train_path.suffix.lower() == ".txt":
+        return sum(1 for line in train_path.read_text(encoding="utf-8").splitlines() if line.strip())
+    return 0
+
 def _run_training(data: str, epochs: int, base_model: str, imgsz: int, batch: int, device: str):
     global _train_state
     _train_state["log"] = []
@@ -252,6 +319,14 @@ def _run_training(data: str, epochs: int, base_model: str, imgsz: int, batch: in
     _train_state["current_epoch"] = 0
     _train_state["total_epochs"] = epochs
     _train_state["progress_pct"] = 0
+    _train_state["images_done"] = 0
+    dataset_size = _dataset_image_count(data)
+    _train_state["images_total"] = dataset_size * epochs
+    _train_state["dataset_size"] = dataset_size
+    _train_state["current_batch"] = 0
+    _train_state["batches_per_epoch"] = math.ceil(dataset_size / batch) if dataset_size and batch > 0 else 0
+    _train_state["elapsed_seconds"] = 0
+    _train_state["eta_seconds"] = None
 
     cmd = [
         sys.executable, str(Path(__file__).parent / "train.py"),
@@ -265,11 +340,43 @@ def _run_training(data: str, epochs: int, base_model: str, imgsz: int, batch: in
 
     _train_state["log"].append(f"Using requested device: {device}")
 
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+    child_env = os.environ.copy()
+    child_env["PYTHONIOENCODING"] = "utf-8"
+    child_env["PYTHONUTF8"] = "1"
+    proc = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        bufsize=1,
+        env=child_env,
+    )
     _train_state["proc"] = proc
 
     for line in proc.stdout:
         line = line.rstrip()
+        marker = "XRAY_PROGRESS "
+        marker_index = line.find(marker)
+        if marker_index >= 0:
+            try:
+                progress_text = line[marker_index + len(marker):].lstrip()
+                # raw_decode tolerates terminal/progress-bar text after the JSON object.
+                progress, _ = json.JSONDecoder().raw_decode(progress_text)
+                _train_state["current_epoch"] = progress["epoch"]
+                _train_state["total_epochs"] = progress["epochs"]
+                _train_state["current_batch"] = progress["batch"]
+                _train_state["batches_per_epoch"] = progress["batches_per_epoch"]
+                _train_state["images_done"] = progress["images_done"]
+                _train_state["images_total"] = progress["images_total"]
+                _train_state["dataset_size"] = progress["dataset_size"]
+                _train_state["elapsed_seconds"] = progress["elapsed_seconds"]
+                _train_state["eta_seconds"] = progress["eta_seconds"]
+                _train_state["progress_pct"] = progress["progress_pct"]
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError):
+                _train_state["log"].append(f"Invalid progress message: {line}")
+            continue
         _train_state["log"].append(line)
         m = re.match(r"^\s*(\d+)\s*/\s*(\d+)\b", line)
         if m:
@@ -325,13 +432,43 @@ def start_training(
     background_tasks: BackgroundTasks,
     data: str = "dataset/data.yaml",
     epochs: int = 100,
-    base_model: str = "yolov8s.pt",
-    imgsz: int = 640,
-    batch: int = 16,
-    device: str = "auto",
+    base_model: str = "yolov8n.pt",
+    imgsz: int = 320,
+    batch: int = 1,
+    device: str = "0",
+    force: bool = False,
 ):
-    if _train_state["status"] == "running":
+    if _train_state["status"] in {"starting", "running"}:
         raise HTTPException(status_code=409, detail="Training already in progress")
+
+    uses_cuda = device == "auto" or device.isdigit() or device.startswith("cuda")
+    if uses_cuda and torch.cuda.is_available():
+        gpu_memory_gb = torch.cuda.get_device_properties(0).total_memory / (1024 ** 3)
+        warnings = []
+        if gpu_memory_gb < 3:
+            model_stem = Path(base_model).stem.lower()
+            if model_stem.startswith(("yolov8s", "yolov8m", "yolov8l", "yolov8x")):
+                warnings.append(
+                    f"GPU chỉ có {gpu_memory_gb:.1f} GB VRAM; {base_model} có thể quá lớn. "
+                    "Khuyến nghị dùng yolov8n.pt."
+                )
+            if batch > 1 or imgsz > 320:
+                warnings.append(
+                    f"Cấu hình batch={batch}, image size={imgsz} có nguy cơ hết VRAM. "
+                    "Khuyến nghị Batch size = 1 và Image size = 320."
+                )
+        if warnings and not force:
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "requires_confirmation": True,
+                    "message": "\n\n".join(warnings) + "\n\nBạn có muốn tiếp tục training không?",
+                    "warnings": warnings,
+                },
+            )
+
+    _train_state["status"] = "starting"
+    _release_inference_model()
     background_tasks.add_task(_run_training, data, epochs, base_model, imgsz, batch, device)
     return {"success": True}
 
@@ -357,6 +494,13 @@ def training_status():
         "current_epoch": _train_state.get("current_epoch", 0),
         "total_epochs": _train_state.get("total_epochs", 0),
         "progress_pct": _train_state.get("progress_pct", 0),
+        "images_done": _train_state.get("images_done", 0),
+        "images_total": _train_state.get("images_total", 0),
+        "dataset_size": _train_state.get("dataset_size", 0),
+        "current_batch": _train_state.get("current_batch", 0),
+        "batches_per_epoch": _train_state.get("batches_per_epoch", 0),
+        "elapsed_seconds": _train_state.get("elapsed_seconds", 0),
+        "eta_seconds": _train_state.get("eta_seconds"),
     }
 
 

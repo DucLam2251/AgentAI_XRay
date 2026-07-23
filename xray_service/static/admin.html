@@ -52,6 +52,7 @@
     .status-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px }
     .status-pill { padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600 }
     .s-idle    { background: #313244; color: #a6adc8 }
+    .s-starting,
     .s-running { background: #fab387; color: #1e1e2e }
     .s-done    { background: #a6e3a1; color: #1e1e2e }
     .s-error   { background: #f38ba8; color: #1e1e2e }
@@ -63,6 +64,17 @@
     .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#89b4fa,#a6e3a1); transition:width .35s ease }
 
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+
+    .full-width { grid-column: 1 / -1 }
+    .detect-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:16px }
+    .detect-panel { min-width:0 }
+    .detect-panel-title { font-size:12px; color:#6c7086; margin-bottom:8px }
+    .detect-image-wrap { display:flex; align-items:center; justify-content:center; min-height:280px;
+                         background:#11111b; border:1px dashed #45475a; border-radius:8px; overflow:hidden }
+    .detect-image-wrap img { display:none; width:100%; max-height:520px; object-fit:contain }
+    .detect-placeholder { color:#6c7086; font-size:13px; text-align:center; padding:20px }
+    .detect-summary { margin:14px 0 8px; font-size:13px; color:#a6adc8 }
+    @media(max-width:700px){ .detect-grid { grid-template-columns:1fr } }
 
     /* Model detail modal */
     .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:100; align-items:center; justify-content:center }
@@ -122,6 +134,14 @@
         <div class="progress-track">
           <div class="progress-fill" id="trainProgressBar"></div>
         </div>
+        <div class="progress-meta" style="margin-top:7px;margin-bottom:0">
+          <span id="trainDataText">Dữ liệu: 0/0 ảnh</span>
+          <span id="trainEtaText">Còn lại: —</span>
+        </div>
+        <div class="progress-meta" style="margin-top:4px;margin-bottom:0">
+          <span id="trainBatchText">Batch: 0/0</span>
+          <span id="trainElapsedText">Đã chạy: 0 giây</span>
+        </div>
       </div>
 
       <div class="grid2">
@@ -132,8 +152,8 @@
         <div class="form-row">
           <label>Base model</label>
           <select id="baseModel">
-            <option value="yolov8n.pt">yolov8n (nano — nhanh)</option>
-            <option value="yolov8s.pt" selected>yolov8s (small — cân bằng)</option>
+            <option value="yolov8n.pt" selected>yolov8n (nano — nhanh, ít VRAM)</option>
+            <option value="yolov8s.pt">yolov8s (small — cân bằng)</option>
             <option value="yolov8m.pt">yolov8m (medium — chính xác hơn)</option>
           </select>
         </div>
@@ -143,17 +163,18 @@
         </div>
         <div class="form-row">
           <label>Batch size</label>
-          <input id="batch" type="number" value="16" min="1" />
+          <input id="batch" type="number" value="1" min="1" />
         </div>
         <div class="form-row">
           <label>Image size</label>
-          <input id="imgsz" type="number" value="640" step="32" />
+          <input id="imgsz" type="number" value="320" step="32" />
         </div>
         <div class="form-row">
           <label>Device</label>
           <select id="device">
-            <option value="auto" selected>auto (ưu tiên GPU, fallback CPU)</option>
-            <option value="0">GPU 0 (cuda:0)</option>
+            <option value="auto">auto (ưu tiên GPU, fallback CPU)</option>
+            <option value="0" selected>NVIDIA GPU 0 (CUDA)</option>
+            <option value="xpu:0">Intel GPU 0 (XPU)</option>
             <option value="cpu">CPU</option>
           </select>
         </div>
@@ -169,6 +190,45 @@
       <button class="btn btn-primary" id="deployBtn" style="margin-top:10px;width:100%" disabled onclick="deployAndActivate()">
         🚀 Kích hoạt model vừa train
       </button>
+    </div>
+  </div>
+
+  <!-- Detection test -->
+  <div class="card full-width">
+    <div class="card-header">Kiểm tra phát hiện ảnh X-quang</div>
+    <div class="card-body">
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
+        <div class="form-row" style="flex:1;min-width:260px;margin-bottom:0">
+          <label>Chọn ảnh X-quang</label>
+          <input id="detectFile" type="file" accept="image/*" onchange="previewDetectFile()" />
+        </div>
+        <button class="btn btn-primary" id="detectBtn" onclick="runDetection()" disabled>🔍 Phát hiện</button>
+      </div>
+
+      <div class="detect-grid">
+        <div class="detect-panel">
+          <div class="detect-panel-title">Ảnh gốc</div>
+          <div class="detect-image-wrap">
+            <span class="detect-placeholder" id="detectOriginalPlaceholder">Chưa chọn ảnh</span>
+            <img id="detectOriginalImage" alt="Ảnh X-quang gốc" />
+          </div>
+        </div>
+        <div class="detect-panel">
+          <div class="detect-panel-title">Kết quả nhận diện</div>
+          <div class="detect-image-wrap">
+            <span class="detect-placeholder" id="detectResultPlaceholder">Kết quả sẽ hiển thị tại đây</span>
+            <img id="detectResultImage" alt="Ảnh X-quang đã nhận diện" />
+          </div>
+        </div>
+      </div>
+
+      <div class="detect-summary" id="detectSummary">Chưa có kết quả.</div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>#</th><th>Nhãn</th><th>Độ tin cậy</th><th>Bounding box [x1, y1, x2, y2]</th></tr></thead>
+          <tbody id="detectTbody"><tr><td colspan="4" style="color:#6c7086">Chưa có dữ liệu</td></tr></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -192,6 +252,89 @@
   const API = 'http://localhost:8000'
   let pollInterval = null
   let latestNewModel = null
+  let detectPreviewUrl = null
+
+  // ── Detection ───────────────────────────────────────────────────────────
+  function previewDetectFile(){
+    const input = document.getElementById('detectFile')
+    const file = input.files && input.files[0]
+    const button = document.getElementById('detectBtn')
+    button.disabled = !file
+    if(!file) return
+
+    if(detectPreviewUrl) URL.revokeObjectURL(detectPreviewUrl)
+    detectPreviewUrl = URL.createObjectURL(file)
+    const original = document.getElementById('detectOriginalImage')
+    original.src = detectPreviewUrl
+    original.style.display = 'block'
+    document.getElementById('detectOriginalPlaceholder').style.display = 'none'
+
+    const result = document.getElementById('detectResultImage')
+    result.removeAttribute('src')
+    result.style.display = 'none'
+    const placeholder = document.getElementById('detectResultPlaceholder')
+    placeholder.textContent = 'Nhấn “Phát hiện” để chạy model'
+    placeholder.style.display = 'block'
+    document.getElementById('detectSummary').textContent = `Đã chọn: ${file.name}`
+    document.getElementById('detectTbody').innerHTML = '<tr><td colspan="4" style="color:#6c7086">Chưa có dữ liệu</td></tr>'
+  }
+
+  async function runDetection(){
+    const input = document.getElementById('detectFile')
+    const file = input.files && input.files[0]
+    if(!file) return
+
+    const button = document.getElementById('detectBtn')
+    const placeholder = document.getElementById('detectResultPlaceholder')
+    button.disabled = true
+    button.textContent = '⏳ Đang xử lý...'
+    placeholder.textContent = 'Model đang xử lý ảnh...'
+    placeholder.style.display = 'block'
+    document.getElementById('detectSummary').textContent = 'Đang gọi API /detect...'
+
+    try {
+      const form = new FormData()
+      form.append('file', file)
+      const response = await fetch(`${API}/detect`, {method:'POST', body:form})
+      const data = await response.json()
+      if(!response.ok) throw new Error(data.detail || `HTTP ${response.status}`)
+
+      const result = document.getElementById('detectResultImage')
+      result.src = `data:image/jpeg;base64,${data.annotated_image_base64}`
+      result.style.display = 'block'
+      placeholder.style.display = 'none'
+
+      const detections = Array.isArray(data.detections) ? data.detections : []
+      document.getElementById('detectSummary').textContent =
+        `Model: ${data.model_used || '—'} • Tìm thấy ${detections.length} đối tượng`
+
+      const tbody = document.getElementById('detectTbody')
+      tbody.replaceChildren()
+      if(!detections.length){
+        const row = tbody.insertRow()
+        const cell = row.insertCell()
+        cell.colSpan = 4
+        cell.style.color = '#fab387'
+        cell.textContent = 'Không phát hiện đối tượng nào trong ảnh.'
+      } else {
+        detections.forEach((item, index) => {
+          const row = tbody.insertRow()
+          row.insertCell().textContent = index + 1
+          row.insertCell().textContent = item.label || '—'
+          row.insertCell().textContent = `${(Number(item.confidence || 0) * 100).toFixed(1)}%`
+          row.insertCell().textContent = Array.isArray(item.bbox) ? `[${item.bbox.join(', ')}]` : '—'
+        })
+      }
+    } catch(error) {
+      document.getElementById('detectSummary').textContent = `Lỗi: ${error.message}`
+      placeholder.textContent = 'Không thể xử lý ảnh'
+      placeholder.style.display = 'block'
+      document.getElementById('detectResultImage').style.display = 'none'
+    } finally {
+      button.disabled = false
+      button.textContent = '🔍 Phát hiện'
+    }
+  }
 
   // ── Health ──────────────────────────────────────────────────────────────
   async function checkHealth(){
@@ -320,7 +463,7 @@
   }
 
   // ── Training ─────────────────────────────────────────────────────────────
-  async function startTraining(){
+  async function startTraining(force = false){
     const params = new URLSearchParams({
       data: document.getElementById('dataPath').value,
       epochs: document.getElementById('epochs').value,
@@ -328,6 +471,7 @@
       imgsz: document.getElementById('imgsz').value,
       batch: document.getElementById('batch').value,
       device: document.getElementById('device').value,
+      force: force ? 'true' : 'false',
     })
     const r = await fetch(`${API}/train/start?${params}`, {method:'POST'})
     if(r.ok){
@@ -336,7 +480,13 @@
       startPolling()
     } else {
       const d = await r.json()
-      alert(d.detail || 'Lỗi bắt đầu training')
+      if(d.detail && d.detail.requires_confirmation){
+        if(confirm(`⚠️ Cảnh báo VRAM\n\n${d.detail.message}`)){
+          await startTraining(true)
+        }
+        return
+      }
+      alert(typeof d.detail === 'string' ? d.detail : 'Lỗi bắt đầu training')
     }
   }
 
@@ -362,18 +512,43 @@
     const d = await r.json()
 
     const pill = document.getElementById('trainStatus')
-    const states = {idle:'s-idle',running:'s-running',done:'s-done',error:'s-error',stopped:'s-stopped'}
-    const labels = {idle:'Idle',running:'⏳ Đang train...',done:'✅ Hoàn thành',error:'❌ Lỗi',stopped:'⚠️ Đã dừng'}
+    const states = {idle:'s-idle',starting:'s-starting',running:'s-running',done:'s-done',error:'s-error',stopped:'s-stopped'}
+    const labels = {idle:'Idle',starting:'⏳ Đang chuẩn bị...',running:'⏳ Đang train...',done:'✅ Hoàn thành',error:'❌ Lỗi',stopped:'⚠️ Đã dừng'}
     pill.className = 'status-pill ' + (states[d.status] || 's-idle')
     pill.textContent = labels[d.status] || d.status
 
     const pctRaw = Number.isFinite(Number(d.progress_pct)) ? Number(d.progress_pct) : 0
-    const pct = Math.max(0, Math.min(100, Math.round(pctRaw)))
+    const pct = Math.max(0, Math.min(100, pctRaw))
+    const pctText = pct < 1 ? pct.toFixed(3) : (pct < 10 ? pct.toFixed(2) : pct.toFixed(1))
     const cur = Number.isFinite(Number(d.current_epoch)) ? Number(d.current_epoch) : 0
     const total = Number.isFinite(Number(d.total_epochs)) ? Number(d.total_epochs) : 0
+    const imagesDone = Number.isFinite(Number(d.images_done)) ? Number(d.images_done) : 0
+    const imagesTotal = Number.isFinite(Number(d.images_total)) ? Number(d.images_total) : 0
+    const datasetSize = Number.isFinite(Number(d.dataset_size)) ? Number(d.dataset_size) : 0
+    const epochImagesDone = imagesDone > 0 && datasetSize > 0 ? (imagesDone % datasetSize || datasetSize) : 0
+    const currentBatch = Number.isFinite(Number(d.current_batch)) ? Number(d.current_batch) : 0
+    const totalBatches = Number.isFinite(Number(d.batches_per_epoch)) ? Number(d.batches_per_epoch) : 0
+
+    function formatDuration(value){
+      if(value === null || value === undefined || !Number.isFinite(Number(value))) return '—'
+      const seconds = Math.max(0, Math.round(Number(value)))
+      const hours = Math.floor(seconds / 3600)
+      const minutes = Math.floor((seconds % 3600) / 60)
+      const secs = seconds % 60
+      if(hours) return `${hours} giờ ${minutes} phút`
+      if(minutes) return `${minutes} phút ${secs} giây`
+      return `${secs} giây`
+    }
+
     document.getElementById('trainProgressBar').style.width = `${pct}%`
-    document.getElementById('trainPercentText').textContent = `${pct}%`
+    document.getElementById('trainPercentText').textContent = `${pctText}%`
     document.getElementById('trainEpochText').textContent = `Epoch: ${cur}/${total}`
+    document.getElementById('trainDataText').textContent = datasetSize > 0
+      ? `Epoch: ${epochImagesDone.toLocaleString('vi-VN')}/${datasetSize.toLocaleString('vi-VN')} • Tổng: ${imagesDone.toLocaleString('vi-VN')}/${imagesTotal.toLocaleString('vi-VN')} ảnh`
+      : 'Dữ liệu: đang chuẩn bị...'
+    document.getElementById('trainBatchText').textContent = `Batch: ${currentBatch}/${totalBatches}`
+    document.getElementById('trainEtaText').textContent = `Còn lại: ${formatDuration(d.eta_seconds)}`
+    document.getElementById('trainElapsedText').textContent = `Đã chạy: ${formatDuration(d.elapsed_seconds)}`
 
     const running = d.status === 'running'
     document.getElementById('startTrainBtn').disabled = running
