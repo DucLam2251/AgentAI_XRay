@@ -154,4 +154,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     best_pt = train(args.data, args.epochs, args.model, args.imgsz, args.batch, args.name, args.device)
+    result_payload = {
+        "best_pt": str(best_pt.resolve()),
+        "run_dir": str(best_pt.resolve().parent.parent),
+    }
+    print("XRAY_TRAINING_RESULT " + json.dumps(result_payload), flush=True)
     print(f"\nNext step: python deploy.py --weights {best_pt}")
